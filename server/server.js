@@ -12,7 +12,7 @@ app.use(express.json());
 
 /* fallback key ชั่วคราว (ใส่ใน env/มีค่าเหนือกว่าจะใช้ env ก่อน)
    ⚠️ ผู้ใช้จะลบ key นี้เองหลังใช้งานเสร็จ อย่าใช้ถาวร */
-const FALLBACK_API_KEY = "tm_live_kryIxohsnSyX_Or3jX-wvQeDuKbaupAe7pUn1sydZvEEJXV81Z_lLZ2U";
+const FALLBACK_API_KEY = "tm_test_h5zr4VghT31v_cVZB8D5ygGXZw8vYAa8yByK9RSVkUJMG1BqJ3t2nTzY";
 
 const API_KEY = process.env.OPENAI_API_KEY || process.env.DEEPSEEK_API_KEY || FALLBACK_API_KEY;
 // base URL ของ API (OpenAI-compatible) — เปลี่ยนตาม provider
