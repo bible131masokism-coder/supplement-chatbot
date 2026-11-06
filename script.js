@@ -216,7 +216,7 @@ function showTyping() {
 //   - ทดสอบในเครื่อง:  "http://localhost:3000"
 //   - หลัง deploy:     เช่น "https://xxx.onrender.com"
 // ถ้าเว้นว่าง "" จะข้าม AI และใช้สคริปต์เดิมแทน (fallback)
-const AI_API_BASE = "http://localhost:3000";
+const AI_API_BASE = "https://supplement-chatbot.onrender.com";
 
 // ประวัติการสนทนาเพื่อให้ AI จำบริบท
 let convoHistory = [];
