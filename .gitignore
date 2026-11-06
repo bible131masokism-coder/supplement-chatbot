@@ -1,0 +1,9 @@
+# แยกไฟล์พึ่งพา / ความลับ ไม่อัปไป GitHub
+node_modules/
+server/node_modules/
+.env
+server/.env
+*.log
+server/q1.json
+server/q1_resp.json
+

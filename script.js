@@ -211,16 +211,57 @@ function showTyping() {
   return t;
 }
 
-/* จำลองดีเลย์การพิมพ์ -> บอทตอบ */
-function botReply(inputText) {
+/* ---------- การเชื่อมต่อ AI (DeepSeek) ---------- */
+// ตั้งค่า AI_API_BASE ให้เป็น URL ของ backend server
+//   - ทดสอบในเครื่อง:  "http://localhost:3000"
+//   - หลัง deploy:     เช่น "https://xxx.onrender.com"
+// ถ้าเว้นว่าง "" จะข้าม AI และใช้สคริปต์เดิมแทน (fallback)
+const AI_API_BASE = "http://localhost:3000";
+
+// ประวัติการสนทนาเพื่อให้ AI จำบริบท
+let convoHistory = [];
+
+async function getAIReply(message, history) {
+  if (!AI_API_BASE) {
+    const intent = matchIntent(message);
+    return getReply(intent);
+  }
+  try {
+    const ctrl = new AbortController();
+    const timer = setTimeout(() => ctrl.abort(), 15000);
+    const res = await fetch(`${AI_API_BASE}/api/chat`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        history: history.concat({ role: "user", content: message }),
+      }),
+      signal: ctrl.signal,
+    });
+    clearTimeout(timer);
+    if (res.ok) {
+      const data = await res.json();
+      if (data && data.reply) return data.reply;
+    }
+  } catch (err) {
+    console.warn("AI backend ไม่พร้อม ใช้สคริปต์เดิมแทน:", err && err.message);
+  }
+  // fallback กลับไปใช้สคริปต์เดิม
+  const intent = matchIntent(message);
+  return getReply(intent);
+}
+
+async function botReply(inputText) {
   const typingEl = showTyping();
-  const delay = 900 + Math.random() * 600;
-  setTimeout(() => {
-    typingEl.remove();
-    const intent = matchIntent(inputText);
-    addMessage(getReply(intent), "bot");
-    scrollToBottom();
-  }, delay);
+  const reply = await getAIReply(inputText, convoHistory);
+  typingEl.remove();
+  addMessage(reply, "bot");
+  convoHistory = convoHistory
+    .concat(
+      { role: "user", content: inputText },
+      { role: "assistant", content: reply }
+    )
+    .slice(-40);
+  scrollToBottom();
 }
 
 function handleUserMessage(text) {
@@ -252,6 +293,7 @@ function renderQuickReplies() {
 function startConversation() {
   chatBox.innerHTML = "";
   inputEl.value = "";
+  convoHistory = [];
   const greeting = getReply(KNOWLEDGE_BASE.find((i) => i.intent === "greeting"));
   setTimeout(() => {
     addMessage(greeting, "bot");
