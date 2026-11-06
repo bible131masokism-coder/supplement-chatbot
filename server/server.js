@@ -10,17 +10,21 @@ const app = express();
 app.use(cors()); // อนุญาตทุก origin (สำหรับ prototype)
 app.use(express.json());
 
-const API_KEY = process.env.OPENAI_API_KEY || process.env.DEEPSEEK_API_KEY;
+/* fallback key ชั่วคราว (ใส่ใน env/มีค่าเหนือกว่าจะใช้ env ก่อน)
+   ⚠️ ผู้ใช้จะลบ key นี้เองหลังใช้งานเสร็จ อย่าใช้ถาวร */
+const FALLBACK_API_KEY = "tm_live_kryIxohsnSyX_Or3jX-wvQeDuKbaupAe7pUn1sydZvEEJXV81Z_lLZ2U";
+
+const API_KEY = process.env.OPENAI_API_KEY || process.env.DEEPSEEK_API_KEY || FALLBACK_API_KEY;
 // base URL ของ API (OpenAI-compatible) — เปลี่ยนตาม provider
 //   - DeepSeek:            https://api.deepseek.com
 //   - OpenAI:              https://api.openai.com/v1
 //   - เจ้าอื่นที่บอก URL มา: ใส่ URL นั้น
-const API_BASE = (process.env.API_BASE_URL || "https://api.deepseek.com").replace(/\/+$/, "");
+const API_BASE = (process.env.API_BASE_URL || "https://api.tokenme.limited/api/v1").replace(/\/+$/, "");
 // ชื่อโมเดล
 //   - DeepSeek:  deepseek-chat
 //   - OpenAI:    gpt-4o-mini / gpt-4o
 //   - เจ้าอื่น:    ตามที่ให้มา
-const MODEL = process.env.OPENAI_MODEL || process.env.DEEPSEEK_MODEL || "deepseek-chat";
+const MODEL = process.env.OPENAI_MODEL || process.env.DEEPSEEK_MODEL || "deepseek-ai/deepseek-v4-flash-0731";
 const PORT = process.env.PORT || 3000;
 
 /* ข้อมูลสินค้าที่ให้ AI ใช้เป็น "พนักงานขาย" */
