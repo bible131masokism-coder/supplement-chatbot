@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>แชทบอทขายสินค้า — อาหารเสริม</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <!-- ฉากหลังสำหรับพรีเซนต์ -->
+  <div class="stage">
+    <div class="page-header">
+      <h1>แชทบอทขายสินค้า (Prototype)</h1>
+      <p>ตัวอย่างบทสนทนาขาย "แคลเซียม+วิตามินดี ซอฟต์เจล" — กดปุ่มลัดหรือพิมพ์คำถามเองได้เลย</p>
+    </div>
+
+    <!-- การ์ดแชท -->
+    <div class="chat-card">
+      <header class="chat-header">
+        <div class="bot-avatar" aria-hidden="true">🤖</div>
+        <div class="chat-header-text">
+          <strong>ทีมขายออนไลน์</strong>
+          <span class="online-dot"></span><small> ออนไลน์ — ตอบไว</small>
+        </div>
+        <button id="restartBtn" class="restart-btn" title="เริ่มการสนทนาใหม่">↻ เริ่มใหม่</button>
+      </header>
+
+      <div id="chatBox" class="chat-body" aria-live="polite">
+        <!-- ข้อความจะถูกแทรกด้วย JavaScript -->
+      </div>
+
+      <div id="quickReplies" class="quick-replies"></div>
+
+      <footer class="chat-input-area">
+        <input id="userInput" type="text" placeholder="พิมพ์คำถาม เช่น ราคาเท่าไหร่" autocomplete="off" />
+        <button id="sendBtn" class="send-btn" aria-label="ส่งข้อความ">➤</button>
+      </footer>
+    </div>
+
+    <p class="footnote">Prototype เพื่อการนำเสนอ — ยังไม่เชื่อมต่อระบบสั่งซื้อจริง</p>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
